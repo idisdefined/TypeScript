@@ -1,6 +1,14 @@
 import { renderBlock } from './lib.js'
+import { formatDate, getLastDayOfNextMonth, shiftDate } from './date-utils.js';
 
-export function renderSearchFormBlock () {
+export function renderSearchFormBlock (dateArrival?: Date, dateDeparture?: Date):void {
+  dateArrival = dateArrival || shiftDate(new Date(), 1)
+  const arrival = formatDate(dateArrival);
+  const departure = formatDate(dateDeparture || shiftDate(dateArrival, 2));
+  const now = formatDate(new Date());
+  const LastDayOfNextMonth = formatDate(getLastDayOfNextMonth(new Date()));
+
+
   renderBlock(
     'search-form-block',
     `
@@ -20,11 +28,11 @@ export function renderSearchFormBlock () {
         <div class="row">
           <div>
             <label for="check-in-date">Дата заезда</label>
-            <input id="check-in-date" type="date" value="2022-01-14" min="2022-01-13" max="2022-02-28" name="checkin" />
+            <input id="check-in-date" type="date" value="${arrival}" min="${now}" max="${LastDayOfNextMonth}" name="checkin" />
           </div>
           <div>
             <label for="check-out-date">Дата выезда</label>
-            <input id="check-out-date" type="date" value="2022-01-15" min="2022-01-13" max="2022-02-28" name="checkout" />
+            <input id="check-out-date" type="date" value="${departure}" min="${arrival}" max="${LastDayOfNextMonth}" name="checkout" />
           </div>
           <div>
             <label for="max-price">Макс. цена суток</label>

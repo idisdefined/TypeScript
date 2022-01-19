@@ -3,9 +3,14 @@ import { renderSearchFormBlock } from './search-form.js'
 import { renderSearchStubBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
+import {User, getFavoritesAmount, getUserData} from './infoUser.js'
+
 
 window.addEventListener('DOMContentLoaded', () => {
-  renderUserBlock(0)
+  const user: User = getUserData();
+  renderUserBlock(getFavoritesAmount(), user.username, user.avatarUrl)
+  getUserData()
+  getFavoritesAmount()
   renderSearchFormBlock()
   renderSearchStubBlock()
   renderToast(
