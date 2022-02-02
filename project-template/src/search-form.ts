@@ -1,18 +1,36 @@
 import { renderBlock } from './lib.js'
-import { formatDate, getLastDayOfNextMonth, shiftDate } from './date-utils.js';
+import { FormInc, searchFormArg } from './intrSearchForm.js';
+import { format, getLastDayNextMonth, changeDate } from './date-utils.js';
 
 export function renderSearchFormBlock (dateArrival?: Date, dateDeparture?: Date):void {
-  dateArrival = dateArrival || shiftDate(new Date(), 1)
-  const arrival = formatDate(dateArrival);
-  const departure = formatDate(dateDeparture || shiftDate(dateArrival, 2));
-  const now = formatDate(new Date());
-  const LastDayOfNextMonth = formatDate(getLastDayOfNextMonth(new Date()));
-
-
+  dateArrival = dateArrival || changeDate(new Date(), 1)
+  const arrival = format(dateArrival);
+  const departure = format(dateDeparture || changeDate(dateArrival, 2));
+  const now = format(new Date());
+  const LastDayOfNextMonth = format(getLastDayNextMonth(new Date()));
+  
+  type typesName = 'checkin' | 'checkout' | 'price'
+  const formEvent = (event: SubmitEvent, values: typesName[]): void => {
+    event.preventDefault()
+    if (event.target) {
+      const formData = new FormData(event.target as HTMLFormElement)
+      const formValue: FormInc = {};
+      values.forEach(k => {
+        formValue[k] = <typesName>formData.get(k)
+      })
+      searchFormArg(formValue)
+    }
+  }
+  const formAction = document.querySelector('#form');
+  if(formAction) {
+    const inputes:typesName[] = ['checkin', 'checkout', 'price']
+    formAction.addEventListener('submit', (emit) => formEvent(emit, inputes))
+  }
+  
   renderBlock(
     'search-form-block',
     `
-    <form>
+    <form id="form">
       <fieldset class="search-filedset">
         <div class="row">
           <div>
@@ -39,7 +57,7 @@ export function renderSearchFormBlock (dateArrival?: Date, dateDeparture?: Date)
             <input id="max-price" type="text" value="" name="price" class="max-price" />
           </div>
           <div>
-            <div><button>Найти</button></div>
+            <div><button type="submit">Найти</button></div>
           </div>
         </div>
       </fieldset>

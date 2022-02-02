@@ -1,7 +1,7 @@
 export interface FormInc {
-    check?: string,
-    price?: string,
-    isOut?: string 
+  checkin?: string,
+  checkout?: string,
+  price?: string
 }
 
 export const searchFormArg = (formData: FormInc): void => {

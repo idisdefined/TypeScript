@@ -9,7 +9,7 @@ export class User {
 }
 
 export function getUserData () {
-  const user: unknown = JSON.parse(window.localStorage.getItem('user'));
+  const user: unknown = JSON.parse(window.localStorage.getItem('user') || '{}');
   Object.setPrototypeOf(user, User.prototype);
 
   if (user instanceof User) {
@@ -19,5 +19,5 @@ export function getUserData () {
   }
 }
 export function getFavoritesAmount () {
-  return +window.localStorage.getItem('favoritesAmount');
+  return window.localStorage.getItem('favoritesAmount')
 }

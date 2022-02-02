@@ -1,21 +1,23 @@
 import { renderSearchFormBlock } from './search-form.js'
-import { renderSearchStubBlock } from './search-results.js'
+import { renderSearchStubBlock, renderEmptyOrErrorSearchBlock, renderSearchResultsBlock } from './search-results.js'
 import { renderUserBlock } from './user.js'
 import { renderToast } from './lib.js'
-import {User, getFavoritesAmount, getUserData} from './infoUser.js'
-import { getTodosByCount } from './todosCount.js'
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  const user: User = getUserData();
-  renderUserBlock(getFavoritesAmount(), user.username, user.avatarUrl)
-  getUserData()
-  getFavoritesAmount()
+  renderUserBlock(0, 'Wade Warren', './img/avatar.png')
   renderSearchFormBlock()
   renderSearchStubBlock()
-  getTodosByCount(0)
+  renderEmptyOrErrorSearchBlock('Ничего не найдено..')
+  renderSearchResultsBlock()
   renderToast(
-    {text: 'Это пример уведомления. Используйте его при необходимости', type: 'success'},
-    {name: 'Понял', handler: () => {console.log('Уведомление закрыто')}}
+    { 
+      text: 'Это пример уведомления. Используйте его при необходимости',
+      type: 'success',
+      name: ''
+    },
+    {
+      name: 'Понял',
+      handler: () => {console.log('Уведомление закрыто')}}
   )
 })
